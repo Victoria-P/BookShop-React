@@ -3,26 +3,23 @@ import firebase from "../firebase";
 
 class Genres extends Component {
   state = {
-    genres: [],
-    selectedGenre: "allGenres",
+    genres: this.props.genres,
+    selectedGenre: this.props.selectedGenre,
   };
 
   componentDidMount() {
     const itemsRef = firebase.database().ref("genres");
-    const genres = { ...this.state.genres };
+    const genres = { ...this.props.genres };
     itemsRef.on("value", (snapshot) => {
       let items = snapshot.val();
       this.setState({ genres: Object.values(items) });
     });
+    console.log(this.state.genres);
   }
-
-  handleGenreSelect = (genre) => {
-    this.setState({ selectedGenre: genre });
-    console.log(this.state.selectedGenre);
-  };
 
   render() {
     const { genres, selectedGenre } = this.state;
+    const { onItemSelected } = this.props;
     return (
       <div>
         <ul className="list-group">
@@ -33,7 +30,7 @@ class Genres extends Component {
                 ? "list-group-item active"
                 : "list-group-item"
             }
-            onClick={() => this.handleGenreSelect("allGenres")}
+            onClick={() => onItemSelected("allGenres")}
           >
             All Genres
           </li>
@@ -45,7 +42,7 @@ class Genres extends Component {
                   ? "list-group-item active"
                   : "list-group-item"
               }
-              onClick={() => this.handleGenreSelect(genre.name)}
+              onClick={() => onItemSelected(genre.name)}
             >
               {genre.name}
             </li>

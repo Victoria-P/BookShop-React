@@ -3,6 +3,7 @@ body {
   padding: 0;
 }
 
-.list-group {
+.list-group,
+.bookCard {
   margin-top: 3vw;
 }

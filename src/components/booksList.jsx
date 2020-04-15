@@ -4,7 +4,7 @@ import firebase from "../firebase";
 
 class BooksList extends Component {
   state = {
-    books: [],
+    books: this.props.books,
   };
 
   componentDidMount() {
@@ -12,14 +12,19 @@ class BooksList extends Component {
     const books = { ...this.state.books };
     itemsRef.on("value", (snapshot) => {
       let items = snapshot.val();
-      this.setState({ genres: Object.values(items) });
+      this.setState({ books: Object.values(items) });
     });
+    console.log(this.state.books);
   }
 
   render() {
+    const { books } = this.state;
+
     return (
       <div>
-        <BookCard books={this.state.books} />
+        {books.map((book) => (
+          <BookCard book={book} key={book.id} />
+        ))}
       </div>
     );
   }
