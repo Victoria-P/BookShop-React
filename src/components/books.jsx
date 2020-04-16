@@ -45,6 +45,10 @@ class Books extends Component {
   render() {
     const { genres, selectedGenre, search, books } = this.state;
 
+    const searched = books.filter((b) =>
+      b.name.startsWith(search.toLowerCase())
+    );
+
     return (
       <div>
         <div className="row">
@@ -58,7 +62,7 @@ class Books extends Component {
           <div className="col m-2">
             <Search value={search} onChange={this.handleSearch} />
 
-            <BooksList books={books} />
+            <BooksList books={searched ? searched : books} />
           </div>
         </div>
       </div>
