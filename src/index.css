@@ -4,6 +4,7 @@ body {
 }
 
 .list-group,
-.bookCard {
+.bookCard,
+.searchInput {
   margin-top: 3vw;
 }

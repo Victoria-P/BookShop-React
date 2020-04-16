@@ -1,13 +1,35 @@
 import React, { Component } from "react";
 import BooksList from "./booksList";
 import Genres from "./genres";
+import Search from "./common/search";
+import http from "./services/httpService";
 
 class Books extends Component {
   state = {
     genres: [],
     books: [],
     selectedGenre: "allGenres",
+    search: "",
   };
+
+  componentDidMount() {
+    this.getGenres();
+    this.getBooks();
+  }
+
+  async getGenres() {
+    const genres = await http.get("genres");
+    this.setState({
+      genres: Object.values(genres),
+    });
+  }
+
+  async getBooks() {
+    const books = await http.get("books");
+    this.setState({
+      books: Object.values(books),
+    });
+  }
 
   handleGenreSelect = (genre) => {
     this.setState({ selectedGenre: genre });
@@ -15,19 +37,28 @@ class Books extends Component {
     console.log(this.state.selectedGenre);
   };
 
+  handleSearch = (query) => {
+    this.setState({ search: query });
+    console.log(this.state.search);
+  };
+
   render() {
+    const { genres, selectedGenre, search, books } = this.state;
+
     return (
       <div>
         <div className="row">
           <div className="col-3 m-2">
             <Genres
-              genres={this.state.genres}
-              selectedGenre={this.state.selectedGenre}
+              genres={genres}
+              selectedGenre={selectedGenre}
               onItemSelected={this.handleGenreSelect}
             />
           </div>
           <div className="col m-2">
-            <BooksList books={this.state.books} />
+            <Search value={search} onChange={this.handleSearch} />
+
+            <BooksList books={books} />
           </div>
         </div>
       </div>
