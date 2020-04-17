@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 
 class Navbar extends Component {
   state = {};
@@ -8,7 +9,8 @@ class Navbar extends Component {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <Link to="/books" className="navbar-brand">
-          Bookshop <i className="fa fa-film"></i>
+          Bookshop{" "}
+          <FontAwesomeIcon icon={faBookmark} style={{ color: "#e41d1d" }} />
         </Link>
         <button
           className="navbar-toggler"

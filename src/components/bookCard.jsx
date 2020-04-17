@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import firebase from "../firebase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTheaterMasks, faHeart } from "@fortawesome/free-solid-svg-icons";
 
 class BookCard extends Component {
   render() {
@@ -7,7 +8,7 @@ class BookCard extends Component {
 
     return (
       <div className="bookCard">
-        <div className="card mb-3" style={{ maxWidth: "540px" }}>
+        <div className="card" style={{ maxWidth: "540px" }}>
           <div className="row no-gutters">
             <div className="col-md-4">
               <img src={book.imageUrl} className="card-img" alt={book.name} />
@@ -15,9 +16,18 @@ class BookCard extends Component {
             <div className="col-md-8">
               <div className="card-body">
                 <h5 className="card-title">
-                  {book.name} | {book.author}
+                  {book.name} <br />
+                  <span className="author">by {book.author}</span>
                 </h5>
                 <p className="card-text">{book.description}</p>
+                <p className="card-genre">
+                  <FontAwesomeIcon icon={faTheaterMasks} />
+                  {book.genre.name}
+                </p>
+                <div className="cardLike">
+                  <FontAwesomeIcon icon={faHeart} className="like" />
+                  Add to Favourite
+                </div>
               </div>
             </div>
           </div>

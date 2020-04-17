@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import BooksList from "./booksList";
+import ItemsList from "./itemsList";
 import Genres from "./genres";
 import Search from "./common/search";
 import http from "./services/httpService";
+import { paginate } from "./services/pagination";
+import Pagination from "./common/pagination";
 
 class Books extends Component {
   state = {
@@ -10,6 +12,8 @@ class Books extends Component {
     books: [],
     selectedGenre: "allGenres",
     search: "",
+    currentPage: 1,
+    pageSize: 3,
   };
 
   componentDidMount() {
@@ -31,23 +35,45 @@ class Books extends Component {
     });
   }
 
+  handlePageChange = (page) => {
+    this.setState({ currentPage: page });
+  };
+
   handleGenreSelect = (genre) => {
-    this.setState({ selectedGenre: genre });
+    const selectedGenre = { ...this.state.selectedGenre };
+    if (genre === "allGenres") {
+      this.setState({ selectedGenre: genre, search: "", currentPage: 1 });
+    }
+    this.setState({ selectedGenre: genre, search: "" });
 
     console.log(this.state.selectedGenre);
   };
 
   handleSearch = (query) => {
-    this.setState({ search: query });
+    this.setState({ search: query, selectedGenre: "allGenres" });
     console.log(this.state.search);
   };
 
-  render() {
-    const { genres, selectedGenre, search, books } = this.state;
+  getPageData = () => {
+    const { selectedGenre, search, books, currentPage, pageSize } = this.state;
 
-    const searched = books.filter((b) =>
-      b.name.startsWith(search.toLowerCase())
-    );
+    let filtered = books;
+    if (search) {
+      filtered = books.filter((b) =>
+        b.name.toLowerCase().startsWith(search.toLowerCase())
+      );
+    } else if (!search && selectedGenre !== "allGenres") {
+      filtered = books.filter((b) => b.genre.name === selectedGenre);
+    }
+
+    const allBooks = paginate(filtered, currentPage, pageSize);
+
+    return { totalCount: filtered.length, allBooks };
+  };
+
+  render() {
+    const { genres, selectedGenre, search, currentPage, pageSize } = this.state;
+    const { totalCount, allBooks } = this.getPageData();
 
     return (
       <div>
@@ -62,7 +88,14 @@ class Books extends Component {
           <div className="col m-2">
             <Search value={search} onChange={this.handleSearch} />
 
-            <BooksList books={searched ? searched : books} />
+            <ItemsList books={allBooks} />
+
+            <Pagination
+              itemsCount={totalCount}
+              pageSize={pageSize}
+              onPageChange={this.handlePageChange}
+              currentPage={currentPage}
+            />
           </div>
         </div>
       </div>
