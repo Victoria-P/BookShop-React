@@ -1,7 +1,7 @@
 import React from "react";
 import Form from "../common/form";
 import Joi from "joi-browser";
-import firebase from "../../firebase";
+import auth from "../../services/authService";
 
 class RegisterForm extends Form {
   state = {
@@ -20,10 +20,8 @@ class RegisterForm extends Form {
   };
 
   doSubmit = async () => {
-    const { email, password } = this.state.data;
-    const auth = firebase.auth();
-    const response = await auth.createUserWithEmailAndPassword(email, password);
-    console.log(response);
+    await auth.register(this.state.data);
+    window.location = "/";
   };
 
   render() {
@@ -34,7 +32,7 @@ class RegisterForm extends Form {
           {this.renderInput("username", "Username")}
           {this.renderInput("email", "Email", "email")}
           {this.renderInput("password", "Password", "password")}
-          {this.renderButton("Login")}
+          {this.renderButton("Sign Up")}
         </form>
       </div>
     );

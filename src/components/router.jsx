@@ -6,6 +6,7 @@ import NotFound from "./notFound";
 import AdminPage from "./adminPage";
 import LoginForm from "./auth/loginForm";
 import RegisterForm from "./auth/registerForm";
+import Logout from "./auth/logout";
 
 const Router = () => {
   return (
@@ -19,6 +20,7 @@ const Router = () => {
           <Route path="/books" component={Books} />
           <Route path="/admin" component={AdminPage} />
           <Route path="/not-found" component={NotFound} />
+          <Route path="/logout" component={Logout} />
           <Route exact path="/" component={Books} />
           <Redirect to="/not-found" />
         </Switch>

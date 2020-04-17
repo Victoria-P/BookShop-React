@@ -40,21 +40,28 @@ class Navbar extends Component {
                 Manage Books
               </Link>
             </li>
-            <li className="nav-item active">
-              <Link to="/login" className="nav-link">
-                Sign in
-              </Link>
-            </li>
-            <li className="nav-item active">
-              <Link to="/register" className="nav-link">
-                Sign up
-              </Link>
-            </li>
-            <li className="nav-item active">
-              <Link to="/logout" className="nav-link">
-                Sign out
-              </Link>
-            </li>
+            {!this.props.user && (
+              <React.Fragment>
+                <li className="nav-item active">
+                  <Link to="/login" className="nav-link">
+                    Sign in
+                  </Link>
+                </li>
+                <li className="nav-item active">
+                  <Link to="/register" className="nav-link">
+                    Sign up
+                  </Link>
+                </li>
+              </React.Fragment>
+            )}
+
+            {this.props.user && (
+              <li className="nav-item active">
+                <Link to="/logout" className="nav-link">
+                  Sign out
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </nav>

@@ -11,10 +11,12 @@ const config = {
 };
 
 firebase.initializeApp(config);
+const auth = firebase.auth();
+const db = firebase.database();
 
 function get(path) {
   return new Promise((resolve, reject) => {
-    const itemsRef = firebase.database().ref(path);
+    const itemsRef = db.ref(path);
     itemsRef.on("value", (snapshot) => {
       let items = snapshot.val();
       resolve(items);
@@ -22,4 +24,18 @@ function get(path) {
   });
 }
 
-export default { get };
+function post(path, id, data) {
+  return new Promise((resolve, reject) => {
+    db.ref(`${path}/${id}`).set(data, (error) => {
+      if (error) console.log(error);
+      else resolve();
+    });
+  });
+}
+
+
+export default {
+  get,
+  post,
+  auth
+};

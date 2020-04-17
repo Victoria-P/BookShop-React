@@ -4,7 +4,7 @@ import { faTheaterMasks, faHeart } from "@fortawesome/free-solid-svg-icons";
 
 class BookCard extends Component {
   render() {
-    const { book } = this.props;
+    const { book, onLike } = this.props;
 
     return (
       <div className="bookCard">
@@ -24,7 +24,7 @@ class BookCard extends Component {
                   <FontAwesomeIcon icon={faTheaterMasks} />
                   {book.genre.name}
                 </p>
-                <div className="cardLike">
+                <div className="cardLike" onClick={() => onLike(book)}>
                   <FontAwesomeIcon icon={faHeart} className="like" />
                   Add to Favourite
                 </div>
