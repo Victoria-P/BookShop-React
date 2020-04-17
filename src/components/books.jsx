@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import ItemsList from "./itemsList";
 import Genres from "./genres";
 import Search from "./common/search";
-import http from "./services/httpService";
-import { paginate } from "./services/pagination";
+import http from "../services/httpService";
+import { paginate } from "../services/pagination";
 import Pagination from "./common/pagination";
 
 class Books extends Component {
@@ -38,6 +38,11 @@ class Books extends Component {
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
   };
+
+  handleLike = (book) => {
+    console.log("books", this.state.books);
+    console.log("book", book);
+  }
 
   handleGenreSelect = (genre) => {
     const selectedGenre = { ...this.state.selectedGenre };
@@ -88,7 +93,7 @@ class Books extends Component {
           <div className="col m-2">
             <Search value={search} onChange={this.handleSearch} />
 
-            <ItemsList books={allBooks} />
+            <ItemsList books={allBooks} onLike={this.handleLike}/>
 
             <Pagination
               itemsCount={totalCount}

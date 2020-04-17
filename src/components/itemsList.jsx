@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import BookCard from "./bookCard";
 
-const itemsList = ({ books }) => {
+const itemsList = ({ books, onLike }) => {
   return (
     <div>
       {books.map((book) => (
-        <BookCard book={book} key={book.id} />
+        <BookCard book={book} key={book.id} onLike={onLike} />
       ))}
     </div>
   );

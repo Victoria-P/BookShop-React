@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import ItemsList from "./itemsList";
 import Search from "./common/search";
-import http from "./services/httpService";
-import { paginate } from "./services/pagination";
+import http from "../services/httpService";
+import { paginate } from "../services/pagination";
 import Pagination from "./common/pagination";
 
 class AdminPage extends Component {
