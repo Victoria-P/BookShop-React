@@ -4,7 +4,10 @@ body {
 }
 
 .list-group,
-.bookCard,
 .searchInput {
   margin-top: 3vw;
+}
+
+.bookCard {
+  margin: 2vw 0vw;
 }
