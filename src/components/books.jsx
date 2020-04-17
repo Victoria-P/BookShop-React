@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import BooksList from "./booksList";
+import ItemsList from "./itemsList";
 import Genres from "./genres";
 import Search from "./common/search";
 import http from "./services/httpService";
@@ -40,6 +40,10 @@ class Books extends Component {
   };
 
   handleGenreSelect = (genre) => {
+    const selectedGenre = { ...this.state.selectedGenre };
+    if (genre === "allGenres") {
+      this.setState({ selectedGenre: genre, search: "", currentPage: 1 });
+    }
     this.setState({ selectedGenre: genre, search: "" });
 
     console.log(this.state.selectedGenre);
@@ -84,7 +88,7 @@ class Books extends Component {
           <div className="col m-2">
             <Search value={search} onChange={this.handleSearch} />
 
-            <BooksList books={allBooks} />
+            <ItemsList books={allBooks} />
 
             <Pagination
               itemsCount={totalCount}

@@ -8,6 +8,44 @@ body {
   margin-top: 3vw;
 }
 
-.bookCard {
-  margin: 2vw 0vw;
+.bookCard,
+.pagination {
+  /* margin: 2vw 0vw; */
+  margin: 2% 17%;
+}
+
+/* .searchInput {
+  margin-top: 0.2vw;
+} */
+
+.author {
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+.card-text {
+  margin: 0;
+  padding: 1vw;
+}
+
+.card-img {
+  height: 293px;
+}
+
+.cart-title {
+  margin-bottom: 0 !important;
+}
+
+.cardLike {
+  border: 2px solid rgb(189, 185, 185);
+  border-radius: 40px;
+}
+
+.like {
+  color: #e41d1d;
+  padding-right: 2px;
+}
+
+.btn-success {
+  margin-top: 2vw;
 }
