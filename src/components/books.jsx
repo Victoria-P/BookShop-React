@@ -3,6 +3,7 @@ import ItemsList from "./itemsList";
 import Genres from "./genres";
 import Search from "./common/search";
 import http from "../services/httpService";
+import auth from "../services/authService";
 import { paginate } from "../services/pagination";
 import Pagination from "./common/pagination";
 
@@ -14,11 +15,21 @@ class Books extends Component {
     search: "",
     currentPage: 1,
     pageSize: 3,
+    user: null
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    await this.getUser();
     this.getGenres();
     this.getBooks();
+  }
+
+  getUser() {
+    return new Promise(async resolve => {
+      const user = await auth.getCurrentUser();
+      this.setState({ user });
+      resolve();
+    })
   }
 
   async getGenres() {
@@ -29,9 +40,16 @@ class Books extends Component {
   }
 
   async getBooks() {
-    const books = await http.get("books");
+    var books = await http.get("books");
+    books = Object.values(books);
+
+    if(this.state.user){
+      const fl = this.state.user.favouriteList;
+      books.forEach(book => book.liked = fl.indexOf(book.id) != -1);
+    }
+
     this.setState({
-      books: Object.values(books),
+      books: books,
     });
   }
 
@@ -40,8 +58,23 @@ class Books extends Component {
   };
 
   handleLike = (book) => {
-    console.log("books", this.state.books);
-    console.log("book", book);
+    const books = [...this.state.books];
+    const index = books.indexOf(book);
+    books[index] = { ...books[index] };
+    books[index].liked = !books[index].liked;
+    const updatedUser = this.updateUserLikedList(books[index]);
+    this.setState({ books, updatedUser });
+  }
+
+  updateUserLikedList = (book) => {
+    const user = {...this.state.user };
+    const likedList = user.favouriteList;
+    const index = likedList.indexOf(book.id);
+    const uid = auth.getToken();
+
+    book.liked ? likedList.push(book.id) : likedList.splice(index, 1);
+    http.post('users', uid, user);
+    return user;
   }
 
   handleGenreSelect = (genre) => {
@@ -51,18 +84,20 @@ class Books extends Component {
     }
     this.setState({ selectedGenre: genre, search: "" });
 
-    console.log(this.state.selectedGenre);
+    // console.log(this.state.selectedGenre);
   };
 
   handleSearch = (query) => {
     this.setState({ search: query, selectedGenre: "allGenres" });
-    console.log(this.state.search);
+    // console.log(this.state.search);
   };
 
   getPageData = () => {
     const { selectedGenre, search, books, currentPage, pageSize } = this.state;
 
     let filtered = books;
+    console.log(this.props.favourite);
+    if(this.props.favourite) filtered = filtered.filter(book => book.liked);
     if (search) {
       filtered = books.filter((b) =>
         b.name.toLowerCase().startsWith(search.toLowerCase())

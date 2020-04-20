@@ -31,7 +31,7 @@ function logOut() {
 
 function getCurrentUser() {
     return new Promise(async (resolve) => {
-        const uid = localStorage.getItem(tokenKey);
+        const uid = getToken();
         if (uid) {
             const user = await http.get(`users/${uid}`);
             user.favouriteList = user.favouriteList || [];
@@ -41,9 +41,14 @@ function getCurrentUser() {
     });
 }
 
+function getToken() {
+    return localStorage.getItem(tokenKey);
+}
+
 export default {
     register,
     login,
     logOut,
-    getCurrentUser
+    getCurrentUser,
+    getToken
 };
