@@ -29,7 +29,7 @@ body {
 }
 
 .card-img {
-  height: 293px;
+  height: 46vh;
 }
 
 .cart-title {
@@ -44,6 +44,11 @@ body {
 .like {
   color: #e41d1d;
   padding-right: 2px;
+}
+
+.liked {
+  background-color: #e41d1d;
+  color: white !important;
 }
 
 .btn-success {

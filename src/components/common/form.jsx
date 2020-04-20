@@ -10,12 +10,15 @@ class Form extends Component {
   };
 
   validate = () => {
-    const options = { abortEarly: false };
+    const options = { abortEarly: false, allowUnknown: true };
+
     const { error } = Joi.validate(this.state.data, this.schema, options);
     if (!error) return null;
 
     const errors = {};
     for (let item of error.details) errors[item.path[0]] = item.message;
+    console.log(errors);
+
     return errors;
   };
 
@@ -62,7 +65,7 @@ class Form extends Component {
     return (
       <Select
         name={name}
-        value={data[name]}
+        value={data.genreId}
         label={label}
         options={options}
         onChange={this.handleChange}

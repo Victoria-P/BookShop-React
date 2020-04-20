@@ -21,11 +21,17 @@ class BookCard extends Component {
                 <p className="card-text">{book.description}</p>
                 <p className="card-genre">
                   <FontAwesomeIcon icon={faTheaterMasks} />
-                  {book.genre.name}
+                  {book.genreName}
                 </p>
-                <div className="cardLike" onClick={() => onLike(book)}>
-                  <FontAwesomeIcon icon={faHeart} className="like" />
-                  Add to Favourite
+                <div
+                  className={book.liked ? "cardLike liked" : "cardLike"}
+                  onClick={() => onLike(book)}
+                >
+                  <FontAwesomeIcon
+                    icon={faHeart}
+                    className={book.liked ? "like liked" : "like"}
+                  />
+                  {book.liked ? "Favourite Book!" : "Add to Favourite"}
                 </div>
               </div>
             </div>
