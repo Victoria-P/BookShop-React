@@ -7,6 +7,7 @@ import AdminPage from "./adminPage";
 import LoginForm from "./auth/loginForm";
 import RegisterForm from "./auth/registerForm";
 import Logout from "./auth/logout";
+import AdminBookCard from "./adminBookCard";
 
 const Router = () => {
   return (
@@ -16,8 +17,13 @@ const Router = () => {
           <Route path="/login" component={LoginForm} />
           <Route path="/register" component={RegisterForm} />
 
-          <Route path="/favourite-books" render={props => <Books {...props} favourite={true} />} />
+          <Route
+            path="/favourite-books"
+            render={(props) => <Books {...props} favourite={true} />}
+          />
           <Route path="/books" component={Books} />
+
+          <Route path="/admin/new-book" component={AdminBookCard} />
           <Route path="/admin" component={AdminPage} />
           <Route path="/not-found" component={NotFound} />
           <Route path="/logout" component={Logout} />

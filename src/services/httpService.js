@@ -33,9 +33,15 @@ function post(path, id, data) {
   });
 }
 
+function deleteNode(path, id) {
+  return new Promise((resolve, reject) => {
+    db.ref(path).child(id).remove();
+  });
+}
 
 export default {
   get,
   post,
-  auth
+  auth,
+  deleteNode,
 };

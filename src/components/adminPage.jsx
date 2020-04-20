@@ -4,23 +4,31 @@ import Search from "./common/search";
 import http from "../services/httpService";
 import { paginate } from "../services/pagination";
 import Pagination from "./common/pagination";
+import AdminBookCard from "./adminBookCard";
 
 class AdminPage extends Component {
   state = {
     books: [],
+    genres: [],
     search: "",
     currentPage: 1,
     pageSize: 3,
   };
 
   componentDidMount() {
-    this.getBooks();
+    this.getData();
   }
 
-  async getBooks() {
-    const books = await http.get("books");
+  async getData() {
+    const genres = await http.get("genres");
+    var books = await http.get("books");
+    books = Object.values(books);
+    books.forEach((book) => {
+      book.genreName = genres[book.genreId].name;
+    });
     this.setState({
-      books: Object.values(books),
+      genres: Object.values(genres),
+      books,
     });
   }
 
@@ -31,6 +39,24 @@ class AdminPage extends Component {
 
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
+  };
+
+  handleSave = (book) => {
+    const books = [...this.state.books];
+    const index = books.indexOf(book);
+    books[index] = { ...book };
+    this.setState({ books });
+    const bookToSave = { ...book };
+    delete bookToSave.genreName;
+    http.post("books", book.id, bookToSave);
+  };
+
+  handleDelete = (book) => {
+    const books = [...this.state.books];
+    const index = books.indexOf(book);
+    books.splice(index, 1);
+    this.setState({ books });
+    http.deleteNode("books", book.id);
   };
 
   getPageData = () => {
@@ -51,23 +77,33 @@ class AdminPage extends Component {
   };
 
   render() {
-    const { search, currentPage, pageSize } = this.state;
+    const { search, currentPage, pageSize, genres } = this.state;
     const { totalCount, allBooks } = this.getPageData();
 
     return (
       <div>
-        <button className="btn btn-success">New Book</button>
+        <div className="container col-9">
+          <button className="btn btn-success">New Book</button>
 
-        <Search value={search} onChange={this.handleSearch} />
+          <Search value={search} onChange={this.handleSearch} />
 
-        <ItemsList books={allBooks} />
+          {allBooks.map((book) => (
+            <AdminBookCard
+              book={book}
+              genres={genres}
+              key={book.id}
+              onSave={this.handleSave}
+              onDelete={this.handleDelete}
+            />
+          ))}
 
-        <Pagination
-          itemsCount={totalCount}
-          pageSize={pageSize}
-          onPageChange={this.handlePageChange}
-          currentPage={currentPage}
-        />
+          <Pagination
+            itemsCount={totalCount}
+            pageSize={pageSize}
+            onPageChange={this.handlePageChange}
+            currentPage={currentPage}
+          />
+        </div>
       </div>
     );
   }

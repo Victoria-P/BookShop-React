@@ -15,21 +15,20 @@ class Books extends Component {
     search: "",
     currentPage: 1,
     pageSize: 3,
-    user: null
+    user: null,
   };
 
   async componentDidMount() {
     await this.getUser();
-    this.getGenres();
-    this.getBooks();
+    this.getData();
   }
 
   getUser() {
-    return new Promise(async resolve => {
+    return new Promise(async (resolve) => {
       const user = await auth.getCurrentUser();
       this.setState({ user });
       resolve();
-    })
+    });
   }
 
   async getGenres() {
@@ -43,13 +42,52 @@ class Books extends Component {
     var books = await http.get("books");
     books = Object.values(books);
 
-    if(this.state.user){
+    if (this.state.user) {
       const fl = this.state.user.favouriteList;
-      books.forEach(book => book.liked = fl.indexOf(book.id) != -1);
+      books.forEach((book) => (book.liked = fl.indexOf(book.id) != -1));
     }
+    books.forEach((book) => {
+      switch (book.genreId) {
+        case 1:
+          return (book.genreName = "Adventure");
+        case 2:
+          return (book.genreName = "Fantasy");
+        case 3:
+          return (book.genreName = "History");
+        case 4:
+          return (book.genreName = "Romance");
+        case 5:
+          return (book.genreName = "Science");
+      }
+    });
 
     this.setState({
       books: books,
+    });
+
+    // books.forEach((book, index) => {
+    //   book.genreId = book.genre.genreId;
+    //   delete book.genre;
+    //   http.post("books", index, book);
+    // });
+    console.log(this.state.books);
+  }
+
+  async getData() {
+    const genres = await http.get("genres");
+    var books = await http.get("books");
+    books = Object.values(books);
+    books.forEach((book) => {
+      book.genreName = genres[book.genreId].name;
+    });
+
+    if (this.state.user) {
+      const fl = this.state.user.favouriteList;
+      books.forEach((book) => (book.liked = fl.indexOf(book.id) != -1));
+    }
+    this.setState({
+      genres: Object.values(genres),
+      books,
     });
   }
 
@@ -64,18 +102,18 @@ class Books extends Component {
     books[index].liked = !books[index].liked;
     const updatedUser = this.updateUserLikedList(books[index]);
     this.setState({ books, updatedUser });
-  }
+  };
 
   updateUserLikedList = (book) => {
-    const user = {...this.state.user };
+    const user = { ...this.state.user };
     const likedList = user.favouriteList;
     const index = likedList.indexOf(book.id);
     const uid = auth.getToken();
 
     book.liked ? likedList.push(book.id) : likedList.splice(index, 1);
-    http.post('users', uid, user);
+    http.post("users", uid, user);
     return user;
-  }
+  };
 
   handleGenreSelect = (genre) => {
     const selectedGenre = { ...this.state.selectedGenre };
@@ -97,13 +135,13 @@ class Books extends Component {
 
     let filtered = books;
     console.log(this.props.favourite);
-    if(this.props.favourite) filtered = filtered.filter(book => book.liked);
+    if (this.props.favourite) filtered = filtered.filter((book) => book.liked);
     if (search) {
-      filtered = books.filter((b) =>
+      filtered = filtered.filter((b) =>
         b.name.toLowerCase().startsWith(search.toLowerCase())
       );
     } else if (!search && selectedGenre !== "allGenres") {
-      filtered = books.filter((b) => b.genre.name === selectedGenre);
+      filtered = filtered.filter((b) => b.genreName === selectedGenre);
     }
 
     const allBooks = paginate(filtered, currentPage, pageSize);
@@ -128,7 +166,7 @@ class Books extends Component {
           <div className="col m-2">
             <Search value={search} onChange={this.handleSearch} />
 
-            <ItemsList books={allBooks} onLike={this.handleLike}/>
+            <ItemsList books={allBooks} onLike={this.handleLike} />
 
             <Pagination
               itemsCount={totalCount}
