@@ -5,7 +5,6 @@ import { faTheaterMasks, faHeart } from "@fortawesome/free-solid-svg-icons";
 class BookCard extends Component {
   render() {
     const { book, onLike } = this.props;
-
     return (
       <div className="bookCard">
         <div className="card" style={{ maxWidth: "540px" }}>

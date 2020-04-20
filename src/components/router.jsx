@@ -16,7 +16,7 @@ const Router = () => {
           <Route path="/login" component={LoginForm} />
           <Route path="/register" component={RegisterForm} />
 
-          <Route path="/favourite-books" component={FavouriteBooks} />
+          <Route path="/favourite-books" render={props => <Books {...props} favourite={true} />} />
           <Route path="/books" component={Books} />
           <Route path="/admin" component={AdminPage} />
           <Route path="/not-found" component={NotFound} />
