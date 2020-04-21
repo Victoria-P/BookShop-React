@@ -44,7 +44,7 @@ class Books extends Component {
 
     if (this.state.user) {
       const fl = this.state.user.favouriteList;
-      books.forEach((book) => (book.liked = fl.indexOf(book.id) != -1));
+      books.forEach((book) => (book.liked = fl.indexOf(book.id) !== -1));
     }
     books.forEach((book) => {
       switch (book.genreId) {
@@ -64,13 +64,6 @@ class Books extends Component {
     this.setState({
       books: books,
     });
-
-    // books.forEach((book, index) => {
-    //   book.genreId = book.genre.genreId;
-    //   delete book.genre;
-    //   http.post("books", index, book);
-    // });
-    console.log(this.state.books);
   }
 
   async getData() {
@@ -83,7 +76,7 @@ class Books extends Component {
 
     if (this.state.user) {
       const fl = this.state.user.favouriteList;
-      books.forEach((book) => (book.liked = fl.indexOf(book.id) != -1));
+      books.forEach((book) => (book.liked = fl.indexOf(book.id) !== -1));
     }
     this.setState({
       genres: Object.values(genres),
@@ -116,18 +109,14 @@ class Books extends Component {
   };
 
   handleGenreSelect = (genre) => {
-    const selectedGenre = { ...this.state.selectedGenre };
     if (genre === "allGenres") {
       this.setState({ selectedGenre: genre, search: "", currentPage: 1 });
     }
     this.setState({ selectedGenre: genre, search: "" });
-
-    // console.log(this.state.selectedGenre);
   };
 
   handleSearch = (query) => {
     this.setState({ search: query, selectedGenre: "allGenres" });
-    // console.log(this.state.search);
   };
 
   getPageData = () => {

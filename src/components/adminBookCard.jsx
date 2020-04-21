@@ -1,8 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
-// import auth from "../services/authService";
-import http from "../services/httpService";
 
 class AdminBookCard extends Form {
   state = {
@@ -18,8 +16,6 @@ class AdminBookCard extends Form {
   };
 
   componentDidMount() {
-    // if (!this.props.book) return;
-
     console.log(this.props.book);
     this.setState({ data: this.mapToViewModel(this.props.book) });
   }
@@ -45,8 +41,6 @@ class AdminBookCard extends Form {
   };
 
   doSubmit = async () => {
-    // const response = await http.post("books", );
-    // console.log(response);
     this.props.onSave(this.state.data);
   };
 
