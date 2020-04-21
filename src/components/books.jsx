@@ -134,7 +134,6 @@ class Books extends Component {
     const { selectedGenre, search, books, currentPage, pageSize } = this.state;
 
     let filtered = books;
-    console.log(this.props.favourite);
     if (this.props.favourite) filtered = filtered.filter((book) => book.liked);
     if (search) {
       filtered = filtered.filter((b) =>
