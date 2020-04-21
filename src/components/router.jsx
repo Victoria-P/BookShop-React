@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Books from "./books";
-import FavouriteBooks from "./favouriteBooks";
 import NotFound from "./notFound";
 import AdminPage from "./adminPage";
 import LoginForm from "./auth/loginForm";

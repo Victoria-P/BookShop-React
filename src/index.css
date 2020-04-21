@@ -4,7 +4,7 @@ body {
 }
 
 .list-group {
-  margin-top: 3vw;
+  margin-top: 1.5vw;
 }
 
 .navbar {
@@ -17,13 +17,8 @@ body {
 
 .bookCard,
 .pagination {
-  /* margin: 2vw 0vw; */
   margin: 2% 17%;
 }
-
-/* .searchInput {
-  margin-top: 0.2vw;
-} */
 
 .author {
   font-style: italic;
@@ -47,6 +42,12 @@ body {
 .cardLike {
   border: 2px solid rgb(189, 185, 185);
   border-radius: 40px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+.cardLike:hover {
+  background-color: #ffc4d5;
+  border-color: #ffc4d5;
 }
 
 .like {
