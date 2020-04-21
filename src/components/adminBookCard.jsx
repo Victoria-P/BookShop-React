@@ -18,19 +18,21 @@ class AdminBookCard extends Form {
   };
 
   componentDidMount() {
-    console.log(this.state.data.genres);
+    // if (!this.props.book) return;
+
+    console.log(this.props.book);
     this.setState({ data: this.mapToViewModel(this.props.book) });
   }
 
-  mapToViewModel(book) {
+  mapToViewModel(book = {}) {
     return {
-      id: book.id,
-      name: book.name,
-      author: book.author,
-      description: book.description,
-      imageUrl: book.imageUrl,
-      genreId: book.genreId,
-      genreName: book.genreName,
+      id: book.id || new Date().getTime(),
+      name: book.name || "",
+      author: book.author || "",
+      description: book.description || "",
+      imageUrl: book.imageUrl || "",
+      genreId: book.genreId || "",
+      genreName: book.genreName || "",
     };
   }
 
@@ -56,11 +58,18 @@ class AdminBookCard extends Form {
         <div className="bookCard">
           <div className="card" style={{ maxWidth: "540px" }}>
             <div className="row no-gutters">
-              <div className="col-md-4">
-                <img src={book.imageUrl} className="card-img" alt={book.name} />
+              <div className="col-4">
+                <img
+                  src={
+                    this.state.data.imageUrl ||
+                    "https://aimint.org/za/wp-content/uploads/sites/16/2016/04/image-placeholder-vertical.jpg"
+                  }
+                  className="card-img mt-4"
+                  alt={this.state.data.name}
+                />
                 {this.renderInput("imageUrl", "Image URL")}
               </div>
-              <div className="col-md-8">
+              <div className="col">
                 <div className="card-body">
                   <h5 className="card-title">
                     {this.renderInput("name", "Title")}
@@ -75,12 +84,14 @@ class AdminBookCard extends Form {
                   >
                     Save
                   </button>
-                  <button
-                    className="btn btn-outline-danger"
-                    onClick={() => onDelete(book)}
-                  >
-                    Delete
-                  </button>
+                  {onDelete && (
+                    <button
+                      className="btn btn-outline-danger"
+                      onClick={() => onDelete(book)}
+                    >
+                      Delete
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

@@ -5,6 +5,7 @@ import http from "../services/httpService";
 import { paginate } from "../services/pagination";
 import Pagination from "./common/pagination";
 import AdminBookCard from "./adminBookCard";
+import FormModal from "./formModal";
 
 class AdminPage extends Component {
   state = {
@@ -13,6 +14,7 @@ class AdminPage extends Component {
     search: "",
     currentPage: 1,
     pageSize: 3,
+    modalBookOpen: false,
   };
 
   componentDidMount() {
@@ -45,7 +47,7 @@ class AdminPage extends Component {
     const books = [...this.state.books];
     const index = books.indexOf(book);
     books[index] = { ...book };
-    this.setState({ books });
+    this.setState({ books, modalBookOpen: false });
     const bookToSave = { ...book };
     delete bookToSave.genreName;
     http.post("books", book.id, bookToSave);
@@ -76,14 +78,25 @@ class AdminPage extends Component {
     return { totalCount: filtered.length, allBooks };
   };
 
+  createNewBookForm = () => {
+    return (
+      <AdminBookCard genres={this.state.genres} onSave={this.handleSave} />
+    );
+  };
+
   render() {
-    const { search, currentPage, pageSize, genres } = this.state;
+    const { search, currentPage, pageSize, genres, modalBookOpen } = this.state;
     const { totalCount, allBooks } = this.getPageData();
 
     return (
       <div>
         <div className="container col-9">
-          <button className="btn btn-success">New Book</button>
+          <FormModal
+            modalOpen={modalBookOpen}
+            content={this.createNewBookForm()}
+            title="New Book"
+            buttonText="New Book"
+          />
 
           <Search value={search} onChange={this.handleSearch} />
 

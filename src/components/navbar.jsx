@@ -56,11 +56,16 @@ class Navbar extends Component {
             )}
 
             {this.props.user && (
-              <li className="nav-item active">
-                <Link to="/logout" className="nav-link">
-                  Sign out
-                </Link>
-              </li>
+              <React.Fragment>
+                <li className="nav-item nav-link active">
+                  Hello {this.props.user.username}!
+                </li>
+                <li className="nav-item active">
+                  <Link to="/logout" className="nav-link">
+                    Sign out
+                  </Link>
+                </li>
+              </React.Fragment>
             )}
           </ul>
         </div>
